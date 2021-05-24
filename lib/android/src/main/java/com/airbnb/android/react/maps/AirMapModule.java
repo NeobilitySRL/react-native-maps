@@ -18,9 +18,9 @@ import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.NativeViewHierarchyManager;
 import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
+import com.huawei.hms.maps.HuaweiMap;
+import com.huawei.hms.maps.model.CameraPosition;
+import com.huawei.hms.maps.model.LatLng;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -100,7 +100,7 @@ public class AirMapModule extends ReactContextBaseJavaModule {
           promise.reject("AirMapView.map is not valid");
           return;
         }
-        view.map.snapshot(new GoogleMap.SnapshotReadyCallback() {
+        view.map.snapshot(new HuaweiMap.SnapshotReadyCallback() {
           public void onSnapshotReady(@Nullable Bitmap snapshot) {
 
             // Convert image to requested width/height if necessary

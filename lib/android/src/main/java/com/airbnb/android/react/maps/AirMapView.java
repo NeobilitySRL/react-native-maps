@@ -33,27 +33,28 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewProps;
 import com.facebook.react.uimanager.events.EventDispatcher;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.Projection;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.GroundOverlay;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PointOfInterest;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.TileOverlay;
-import com.google.android.gms.maps.model.VisibleRegion;
-import com.google.android.gms.maps.model.IndoorBuilding;
-import com.google.android.gms.maps.model.IndoorLevel;
+import com.huawei.hms.maps.CameraUpdate;
+import com.huawei.hms.maps.CameraUpdateFactory;
+import com.huawei.hms.maps.HuaweiMap;
+import com.huawei.hms.maps.HuaweiMapOptions;
+import com.huawei.hms.maps.MapView;
+import com.huawei.hms.maps.OnMapReadyCallback;
+import com.huawei.hms.maps.Projection;
+import com.huawei.hms.maps.model.BitmapDescriptorFactory;
+import com.huawei.hms.maps.model.CameraPosition;
+import com.huawei.hms.maps.model.GroundOverlay;
+import com.huawei.hms.maps.model.LatLng;
+import com.huawei.hms.maps.model.LatLngBounds;
+import com.huawei.hms.maps.model.Marker;
+import com.huawei.hms.maps.model.MarkerOptions;
+import com.huawei.hms.maps.model.PointOfInterest;
+import com.huawei.hms.maps.model.Polygon;
+import com.huawei.hms.maps.model.Polyline;
+import com.huawei.hms.maps.model.TileOverlay;
+import com.huawei.hms.maps.model.VisibleRegion;
+import com.huawei.hms.maps.model.IndoorBuilding;
+import com.huawei.hms.maps.model.IndoorLevel;
 import com.google.maps.android.data.kml.KmlContainer;
 import com.google.maps.android.data.kml.KmlLayer;
 import com.google.maps.android.data.kml.KmlPlacemark;
@@ -72,9 +73,9 @@ import java.util.concurrent.ExecutionException;
 
 import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
-public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
-    GoogleMap.OnMarkerDragListener, OnMapReadyCallback, GoogleMap.OnPoiClickListener, GoogleMap.OnIndoorStateChangeListener {
-  public GoogleMap map;
+public class AirMapView extends MapView implements HuaweiMap.InfoWindowAdapter,
+    HuaweiMap.OnMarkerDragListener, OnMapReadyCallback, HuaweiMap.OnPoiClickListener, HuaweiMap.OnIndoorStateChangeListener {
+  public HuaweiMap map;
   private KmlLayer kmlLayer;
   private ProgressBar mapLoadingProgressBar;
   private RelativeLayout mapLoadingLayout;
@@ -149,7 +150,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
 
   public AirMapView(ThemedReactContext reactContext, ReactApplicationContext appContext,
       AirMapManager manager,
-      GoogleMapOptions googleMapOptions) {
+      HuaweiMapOptions googleMapOptions) {
     super(getNonBuggyContext(reactContext, appContext), googleMapOptions);
 
     this.manager = manager;
@@ -207,7 +208,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
   }
 
   @Override
-  public void onMapReady(final GoogleMap map) {
+  public void onMapReady(final HuaweiMap map) {
     if (destroyed) {
       return;
     }
@@ -221,30 +222,31 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
 
     final AirMapView view = this;
 
-    map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-      @Override
-      public void onMyLocationChange(Location location){
-        WritableMap event = new WritableNativeMap();
+//  TODO:
+//    map.setOnMyLocationChangeListener(new HuaweiMap.OnMyLocationChangeListener() {
+//      @Override
+//      public void onMyLocationChange(Location location){
+//        WritableMap event = new WritableNativeMap();
+//
+//        WritableMap coordinate = new WritableNativeMap();
+//        coordinate.putDouble("latitude", location.getLatitude());
+//        coordinate.putDouble("longitude", location.getLongitude());
+//        coordinate.putDouble("altitude", location.getAltitude());
+//        coordinate.putDouble("timestamp", location.getTime());
+//        coordinate.putDouble("accuracy", location.getAccuracy());
+//        coordinate.putDouble("speed", location.getSpeed());
+//        coordinate.putDouble("heading", location.getBearing());
+//        if(android.os.Build.VERSION.SDK_INT >= 18){
+//        coordinate.putBoolean("isFromMockProvider", location.isFromMockProvider());
+//        }
+//
+//        event.putMap("coordinate", coordinate);
+//
+//        manager.pushEvent(context, view, "onUserLocationChange", event);
+//      }
+//    });
 
-        WritableMap coordinate = new WritableNativeMap();
-        coordinate.putDouble("latitude", location.getLatitude());
-        coordinate.putDouble("longitude", location.getLongitude());
-        coordinate.putDouble("altitude", location.getAltitude());
-        coordinate.putDouble("timestamp", location.getTime());
-        coordinate.putDouble("accuracy", location.getAccuracy());
-        coordinate.putDouble("speed", location.getSpeed());
-        coordinate.putDouble("heading", location.getBearing());
-        if(android.os.Build.VERSION.SDK_INT >= 18){
-        coordinate.putBoolean("isFromMockProvider", location.isFromMockProvider());
-        }
-
-        event.putMap("coordinate", coordinate);
-
-        manager.pushEvent(context, view, "onUserLocationChange", event);
-      }
-    });
-
-    map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+    map.setOnMarkerClickListener(new HuaweiMap.OnMarkerClickListener() {
       @Override
       public boolean onMarkerClick(Marker marker) {
         WritableMap event;
@@ -272,7 +274,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       }
     });
 
-    map.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
+    map.setOnPolygonClickListener(new HuaweiMap.OnPolygonClickListener() {
       @Override
       public void onPolygonClick(Polygon polygon) {
         WritableMap event = makeClickEventData(polygon.getPoints().get(0));
@@ -281,7 +283,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       }
     });
 
-    map.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
+    map.setOnPolylineClickListener(new HuaweiMap.OnPolylineClickListener() {
       @Override
       public void onPolylineClick(Polyline polyline) {
         WritableMap event = makeClickEventData(polyline.getPoints().get(0));
@@ -290,7 +292,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       }
     });
 
-    map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+    map.setOnInfoWindowClickListener(new HuaweiMap.OnInfoWindowClickListener() {
       @Override
       public void onInfoWindowClick(Marker marker) {
         WritableMap event;
@@ -311,7 +313,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       }
     });
 
-    map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+    map.setOnMapClickListener(new HuaweiMap.OnMapClickListener() {
       @Override
       public void onMapClick(LatLng point) {
         WritableMap event = makeClickEventData(point);
@@ -320,7 +322,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       }
     });
 
-    map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+    map.setOnMapLongClickListener(new HuaweiMap.OnMapLongClickListener() {
       @Override
       public void onMapLongClick(LatLng point) {
         WritableMap event = makeClickEventData(point);
@@ -329,7 +331,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       }
     });
 
-    map.setOnGroundOverlayClickListener(new GoogleMap.OnGroundOverlayClickListener() {
+    map.setOnGroundOverlayClickListener(new HuaweiMap.OnGroundOverlayClickListener() {
       @Override
       public void onGroundOverlayClick(GroundOverlay groundOverlay) {
         WritableMap event = makeClickEventData(groundOverlay.getPosition());
@@ -338,14 +340,14 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       }
     });
 
-    map.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
+    map.setOnCameraMoveStartedListener(new HuaweiMap.OnCameraMoveStartedListener() {
       @Override
       public void onCameraMoveStarted(int reason) {
         cameraMoveReason = reason;
       }
     });
 
-    map.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+    map.setOnCameraMoveListener(new HuaweiMap.OnCameraMoveListener() {
       @Override
       public void onCameraMove() {
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
@@ -354,7 +356,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       }
     });
 
-    map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+    map.setOnCameraIdleListener(new HuaweiMap.OnCameraIdleListener() {
       @Override
       public void onCameraIdle() {
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
@@ -367,7 +369,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       }
     });
 
-    map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+    map.setOnMapLoadedCallback(new HuaweiMap.OnMapLoadedCallback() {
       @Override public void onMapLoaded() {
         isMapLoaded = true;
         manager.pushEvent(context, view, "onMapLoaded", new WritableNativeMap());
@@ -1089,7 +1091,7 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
       cacheImageView.setVisibility(View.INVISIBLE);
       mapLoadingLayout.setVisibility(View.VISIBLE);
       if (this.isMapLoaded) {
-        this.map.snapshot(new GoogleMap.SnapshotReadyCallback() {
+        this.map.snapshot(new HuaweiMap.SnapshotReadyCallback() {
           @Override public void onSnapshotReady(Bitmap bitmap) {
             cacheImageView.setImageBitmap(bitmap);
             cacheImageView.setVisibility(View.VISIBLE);
@@ -1120,99 +1122,100 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
   }
 
   public void setKmlSrc(String kmlSrc) {
-    try {
-      InputStream kmlStream =  new FileUtil(context).execute(kmlSrc).get();
-
-      if (kmlStream == null) {
-        return;
-      }
-
-      kmlLayer = new KmlLayer(map, kmlStream, context);
-      kmlLayer.addLayerToMap();
-
-      WritableMap pointers = new WritableNativeMap();
-      WritableArray markers = new WritableNativeArray();
-
-      if (kmlLayer.getContainers() == null) {
-        manager.pushEvent(context, this, "onKmlReady", pointers);
-        return;
-      }
-
-      //Retrieve a nested container within the first container
-      KmlContainer container = kmlLayer.getContainers().iterator().next();
-      if (container == null || container.getContainers() == null) {
-        manager.pushEvent(context, this, "onKmlReady", pointers);
-        return;
-      }
-
-
-      if (container.getContainers().iterator().hasNext()) {
-        container = container.getContainers().iterator().next();
-      }
-
-      Integer index = 0;
-      for (KmlPlacemark placemark : container.getPlacemarks()) {
-        MarkerOptions options = new MarkerOptions();
-
-        if (placemark.getInlineStyle() != null) {
-          options = placemark.getMarkerOptions();
-        } else {
-          options.icon(BitmapDescriptorFactory.defaultMarker());
-        }
-
-        LatLng latLng = ((LatLng) placemark.getGeometry().getGeometryObject());
-        String title = "";
-        String snippet = "";
-
-        if (placemark.hasProperty("name")) {
-          title = placemark.getProperty("name");
-        }
-
-        if (placemark.hasProperty("description")) {
-          snippet = placemark.getProperty("description");
-        }
-
-        options.position(latLng);
-        options.title(title);
-        options.snippet(snippet);
-
-        AirMapMarker marker = new AirMapMarker(context, options, this.manager.getMarkerManager());
-
-        if (placemark.getInlineStyle() != null
-            && placemark.getInlineStyle().getIconUrl() != null) {
-          marker.setImage(placemark.getInlineStyle().getIconUrl());
-        } else if (container.getStyle(placemark.getStyleId()) != null) {
-          KmlStyle style = container.getStyle(placemark.getStyleId());
-          marker.setImage(style.getIconUrl());
-        }
-
-        String identifier = title + " - " + index;
-
-        marker.setIdentifier(identifier);
-
-        addFeature(marker, index++);
-
-        WritableMap loadedMarker = makeClickEventData(latLng);
-        loadedMarker.putString("id", identifier);
-        loadedMarker.putString("title", title);
-        loadedMarker.putString("description", snippet);
-
-        markers.pushMap(loadedMarker);
-      }
-
-      pointers.putArray("markers", markers);
-
-      manager.pushEvent(context, this, "onKmlReady", pointers);
-
-    } catch (XmlPullParserException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    }
+    // TODO:
+//    try {
+//      InputStream kmlStream =  new FileUtil(context).execute(kmlSrc).get();
+//
+//      if (kmlStream == null) {
+//        return;
+//      }
+//
+//      kmlLayer = new KmlLayer(map, kmlStream, context);
+//      kmlLayer.addLayerToMap();
+//
+//      WritableMap pointers = new WritableNativeMap();
+//      WritableArray markers = new WritableNativeArray();
+//
+//      if (kmlLayer.getContainers() == null) {
+//        manager.pushEvent(context, this, "onKmlReady", pointers);
+//        return;
+//      }
+//
+//      //Retrieve a nested container within the first container
+//      KmlContainer container = kmlLayer.getContainers().iterator().next();
+//      if (container == null || container.getContainers() == null) {
+//        manager.pushEvent(context, this, "onKmlReady", pointers);
+//        return;
+//      }
+//
+//
+//      if (container.getContainers().iterator().hasNext()) {
+//        container = container.getContainers().iterator().next();
+//      }
+//
+//      Integer index = 0;
+//      for (KmlPlacemark placemark : container.getPlacemarks()) {
+//        MarkerOptions options = new MarkerOptions();
+//
+//        if (placemark.getInlineStyle() != null) {
+//          options = placemark.getMarkerOptions();
+//        } else {
+//          options.icon(BitmapDescriptorFactory.defaultMarker());
+//        }
+//
+//        LatLng latLng = ((LatLng) placemark.getGeometry().getGeometryObject());
+//        String title = "";
+//        String snippet = "";
+//
+//        if (placemark.hasProperty("name")) {
+//          title = placemark.getProperty("name");
+//        }
+//
+//        if (placemark.hasProperty("description")) {
+//          snippet = placemark.getProperty("description");
+//        }
+//
+//        options.position(latLng);
+//        options.title(title);
+//        options.snippet(snippet);
+//
+//        AirMapMarker marker = new AirMapMarker(context, options, this.manager.getMarkerManager());
+//
+//        if (placemark.getInlineStyle() != null
+//            && placemark.getInlineStyle().getIconUrl() != null) {
+//          marker.setImage(placemark.getInlineStyle().getIconUrl());
+//        } else if (container.getStyle(placemark.getStyleId()) != null) {
+//          KmlStyle style = container.getStyle(placemark.getStyleId());
+//          marker.setImage(style.getIconUrl());
+//        }
+//
+//        String identifier = title + " - " + index;
+//
+//        marker.setIdentifier(identifier);
+//
+//        addFeature(marker, index++);
+//
+//        WritableMap loadedMarker = makeClickEventData(latLng);
+//        loadedMarker.putString("id", identifier);
+//        loadedMarker.putString("title", title);
+//        loadedMarker.putString("description", snippet);
+//
+//        markers.pushMap(loadedMarker);
+//      }
+//
+//      pointers.putArray("markers", markers);
+//
+//      manager.pushEvent(context, this, "onKmlReady", pointers);
+//
+//    } catch (XmlPullParserException e) {
+//      e.printStackTrace();
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    } catch (InterruptedException e) {
+//      e.printStackTrace();
+//    } catch (ExecutionException e) {
+//      e.printStackTrace();
+//    }
   }
 
   @Override

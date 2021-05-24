@@ -15,11 +15,11 @@ import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MapStyleOptions;
+import com.huawei.hms.maps.HuaweiMap;
+import com.huawei.hms.maps.model.LatLng;
+import com.huawei.hms.maps.model.LatLngBounds;
+import com.huawei.hms.maps.model.MapStyleOptions;
+import com.huawei.hms.maps.HuaweiMapOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,11 +44,11 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
 
 
   private final Map<String, Integer> MAP_TYPES = MapBuilder.of(
-      "standard", GoogleMap.MAP_TYPE_NORMAL,
-      "satellite", GoogleMap.MAP_TYPE_SATELLITE,
-      "hybrid", GoogleMap.MAP_TYPE_HYBRID,
-      "terrain", GoogleMap.MAP_TYPE_TERRAIN,
-      "none", GoogleMap.MAP_TYPE_NONE
+      "standard", HuaweiMap.MAP_TYPE_NORMAL,
+      "satellite", HuaweiMap.MAP_TYPE_SATELLITE,
+      "hybrid", HuaweiMap.MAP_TYPE_HYBRID,
+      "terrain", HuaweiMap.MAP_TYPE_TERRAIN,
+      "none", HuaweiMap.MAP_TYPE_NONE
   );
 
   private final Map<String, Integer> MY_LOCATION_PRIORITY = MapBuilder.of(
@@ -61,11 +61,11 @@ public class AirMapManager extends ViewGroupManager<AirMapView> {
   private final ReactApplicationContext appContext;
   private AirMapMarkerManager markerManager;
 
-  protected GoogleMapOptions googleMapOptions;
+  protected HuaweiMapOptions googleMapOptions;
 
   public AirMapManager(ReactApplicationContext context) {
     this.appContext = context;
-    this.googleMapOptions = new GoogleMapOptions();
+    this.googleMapOptions = new HuaweiMapOptions();
   }
 
   public AirMapMarkerManager getMarkerManager() {

@@ -3,7 +3,7 @@ package com.airbnb.android.react.maps;
 
 import android.graphics.Bitmap;
 
-import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.huawei.hms.maps.model.BitmapDescriptor;
 
 public interface ImageReadable {
 
