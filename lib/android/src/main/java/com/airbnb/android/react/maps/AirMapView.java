@@ -351,6 +351,14 @@ public class AirMapView extends MapView implements HuaweiMap.InfoWindowAdapter,
       @Override
       public void onCameraMove() {
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+
+        if (Double.isNaN(bounds.northeast.latitude) ||
+            Double.isNaN(bounds.northeast.longitude) ||
+            Double.isNaN(bounds.southwest.latitude) ||
+            Double.isNaN(bounds.southwest.longitude)) {
+          return;
+        }
+
         cameraLastIdleBounds = null;
         eventDispatcher.dispatchEvent(new RegionChangeEvent(getId(), bounds, true));
       }
@@ -360,6 +368,14 @@ public class AirMapView extends MapView implements HuaweiMap.InfoWindowAdapter,
       @Override
       public void onCameraIdle() {
         LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+
+        if (Double.isNaN(bounds.northeast.latitude) ||
+            Double.isNaN(bounds.northeast.longitude) ||
+            Double.isNaN(bounds.southwest.latitude) ||
+            Double.isNaN(bounds.southwest.longitude)) {
+          return;
+        }
+
         if ((cameraMoveReason != 0) &&
           ((cameraLastIdleBounds == null) ||
             LatLngBoundsUtils.BoundsAreDifferent(bounds, cameraLastIdleBounds))) {
@@ -874,12 +890,12 @@ public class AirMapView extends MapView implements HuaweiMap.InfoWindowAdapter,
     if (addedPosition) {
       LatLngBounds bounds = builder.build();
       CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, baseMapPadding);
-      
+
       if (edgePadding != null) {
         map.setPadding(edgePadding.getInt("left"), edgePadding.getInt("top"),
           edgePadding.getInt("right"), edgePadding.getInt("bottom"));
-      }   
-      
+      }
+
       if (animated) {
         map.animateCamera(cu);
       } else {
@@ -1249,13 +1265,13 @@ public class AirMapView extends MapView implements HuaweiMap.InfoWindowAdapter,
       indoorBuilding.putArray("levels", levelsArray);
       indoorBuilding.putInt("activeLevelIndex", 0);
       indoorBuilding.putBoolean("underground", false);
-      
+
       event.putMap("IndoorBuilding", indoorBuilding);
 
       manager.pushEvent(context, this, "onIndoorBuildingFocused", event);
     }
   }
-  
+
   @Override
   public void onIndoorLevelActivated(IndoorBuilding building) {
     if (building == null) {
@@ -1278,7 +1294,7 @@ public class AirMapView extends MapView implements HuaweiMap.InfoWindowAdapter,
 
     manager.pushEvent(context, this, "onIndoorLevelActivated", event);
   }
-    
+
   public void setIndoorActiveLevelIndex(int activeLevelIndex) {
     IndoorBuilding building = this.map.getFocusedBuilding();
     if (building != null) {
