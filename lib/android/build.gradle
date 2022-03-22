@@ -24,9 +24,9 @@ dependencies {
   implementation('com.facebook.react:react-native:+') {
     exclude group: 'com.android.support'
   }
-  implementation "com.google.android.gms:play-services-base:${safeExtGet('playServicesVersion', '17.0.0')}"
+  // implementation "com.google.android.gms:play-services-base:${safeExtGet('playServicesVersion', '17.0.0')}"
   implementation "com.google.android.gms:play-services-maps:${safeExtGet('playServicesVersion', '17.0.0')}"
-  implementation "com.google.android.gms:play-services-location:17.0.0"
+  // implementation "com.google.android.gms:play-services-location:17.0.0"
   implementation 'com.google.maps.android:android-maps-utils:0.5'
   implementation 'com.huawei.hms:maps:5.2.0.302'
   implementation 'com.huawei.hms:location:5.1.0.303'
