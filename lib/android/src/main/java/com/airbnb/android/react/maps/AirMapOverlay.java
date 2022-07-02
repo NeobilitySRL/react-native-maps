@@ -5,13 +5,13 @@ import android.graphics.Bitmap;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.GroundOverlay;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
+import com.huawei.hms.maps.HuaweiMap;
+import com.huawei.hms.maps.model.BitmapDescriptor;
+import com.huawei.hms.maps.model.BitmapDescriptorFactory;
+import com.huawei.hms.maps.model.GroundOverlay;
+import com.huawei.hms.maps.model.GroundOverlayOptions;
+import com.huawei.hms.maps.model.LatLng;
+import com.huawei.hms.maps.model.LatLngBounds;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class AirMapOverlay extends AirMapFeature implements ImageReadable {
   private float transparency;
 
   private final ImageReader mImageReader;
-  private GoogleMap map;
+  private HuaweiMap map;
 
   public AirMapOverlay(Context context) {
     super(context);
@@ -110,7 +110,7 @@ public class AirMapOverlay extends AirMapFeature implements ImageReadable {
   }
 
   @Override
-  public void addToMap(GoogleMap map) {
+  public void addToMap(HuaweiMap map) {
     GroundOverlayOptions groundOverlayOptions = getGroundOverlayOptions();
     if (groundOverlayOptions != null) {
       this.groundOverlay = map.addGroundOverlay(groundOverlayOptions);
@@ -121,7 +121,7 @@ public class AirMapOverlay extends AirMapFeature implements ImageReadable {
   }
 
   @Override
-  public void removeFromMap(GoogleMap map) {
+  public void removeFromMap(HuaweiMap map) {
     this.map = null;
     if (this.groundOverlay != null) {
       this.groundOverlay.remove();

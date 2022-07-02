@@ -27,12 +27,12 @@ import androidx.work.ExistingWorkPolicy;
 import androidx.work.Operation;
 import androidx.work.WorkInfo;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Tile;
-import com.google.android.gms.maps.model.TileOverlay;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.android.gms.maps.model.TileProvider;
-import com.google.android.gms.maps.model.UrlTileProvider;
+import com.huawei.hms.maps.HuaweiMap;
+import com.huawei.hms.maps.model.Tile;
+import com.huawei.hms.maps.model.TileOverlay;
+import com.huawei.hms.maps.model.TileOverlayOptions;
+import com.huawei.hms.maps.model.TileProvider;
+import com.huawei.hms.maps.model.UrlTileProvider;
 
 import java.lang.System;
 

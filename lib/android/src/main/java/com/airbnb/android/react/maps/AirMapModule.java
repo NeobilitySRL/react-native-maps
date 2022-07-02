@@ -3,8 +3,8 @@ package com.airbnb.android.react.maps;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.location.Address;
-import android.location.Geocoder;
+// import android.location.Address;
+// import android.location.Geocoder;
 import android.net.Uri;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -20,9 +20,9 @@ import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.NativeViewHierarchyManager;
 import com.facebook.react.uimanager.UIBlock;
 import com.facebook.react.uimanager.UIManagerModule;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
+import com.huawei.hms.maps.HuaweiMap;
+import com.huawei.hms.maps.model.CameraPosition;
+import com.huawei.hms.maps.model.LatLng;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -103,7 +103,7 @@ public class AirMapModule extends ReactContextBaseJavaModule {
           promise.reject("AirMapView.map is not valid");
           return;
         }
-        view.map.snapshot(new GoogleMap.SnapshotReadyCallback() {
+        view.map.snapshot(new HuaweiMap.SnapshotReadyCallback() {
           public void onSnapshotReady(@Nullable Bitmap snapshot) {
 
             // Convert image to requested width/height if necessary
@@ -183,60 +183,60 @@ public class AirMapModule extends ReactContextBaseJavaModule {
     });
   }
 
-  @ReactMethod
-  public void getAddressFromCoordinates(final int tag, final ReadableMap coordinate, final Promise promise) {
-    final ReactApplicationContext context = getReactApplicationContext();
+  // @ReactMethod
+  // public void getAddressFromCoordinates(final int tag, final ReadableMap coordinate, final Promise promise) {
+  //   final ReactApplicationContext context = getReactApplicationContext();
 
-    UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
-    uiManager.addUIBlock(new UIBlock()
-    {
-      @Override
-      public void execute(NativeViewHierarchyManager nvhm)
-      {
-        AirMapView view = (AirMapView) nvhm.resolveView(tag);
-        if (view == null) {
-          promise.reject("AirMapView not found");
-          return;
-        }
-        if (view.map == null) {
-          promise.reject("AirMapView.map is not valid");
-          return;
-        }
-        if (coordinate == null ||
-                !coordinate.hasKey("latitude") ||
-                !coordinate.hasKey("longitude")) {
-          promise.reject("Invalid coordinate format");
-          return;
-        }
-        Geocoder geocoder = new Geocoder(context);
-        try {
-          List<Address> list =
-                  geocoder.getFromLocation(coordinate.getDouble("latitude"),coordinate.getDouble("longitude"),1);
-          if (list.isEmpty()) {
-            promise.reject("Can not get address location");
-            return;
-          }
-          Address address = list.get(0);
+  //   UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
+  //   uiManager.addUIBlock(new UIBlock()
+  //   {
+  //     @Override
+  //     public void execute(NativeViewHierarchyManager nvhm)
+  //     {
+  //       AirMapView view = (AirMapView) nvhm.resolveView(tag);
+  //       if (view == null) {
+  //         promise.reject("AirMapView not found");
+  //         return;
+  //       }
+  //       if (view.map == null) {
+  //         promise.reject("AirMapView.map is not valid");
+  //         return;
+  //       }
+  //       if (coordinate == null ||
+  //               !coordinate.hasKey("latitude") ||
+  //               !coordinate.hasKey("longitude")) {
+  //         promise.reject("Invalid coordinate format");
+  //         return;
+  //       }
+  //       Geocoder geocoder = new Geocoder(context);
+  //       try {
+  //         List<Address> list =
+  //                 geocoder.getFromLocation(coordinate.getDouble("latitude"),coordinate.getDouble("longitude"),1);
+  //         if (list.isEmpty()) {
+  //           promise.reject("Can not get address location");
+  //           return;
+  //         }
+  //         Address address = list.get(0);
 
-          WritableMap addressJson = new WritableNativeMap();
-          addressJson.putString("name", address.getFeatureName());
-          addressJson.putString("locality", address.getLocality());
-          addressJson.putString("thoroughfare", address.getThoroughfare());
-          addressJson.putString("subThoroughfare", address.getSubThoroughfare());
-          addressJson.putString("subLocality", address.getSubLocality());
-          addressJson.putString("administrativeArea", address.getAdminArea());
-          addressJson.putString("subAdministrativeArea", address.getSubAdminArea());
-          addressJson.putString("postalCode", address.getPostalCode());
-          addressJson.putString("countryCode", address.getCountryCode());
-          addressJson.putString("country", address.getCountryName());
+  //         WritableMap addressJson = new WritableNativeMap();
+  //         addressJson.putString("name", address.getFeatureName());
+  //         addressJson.putString("locality", address.getLocality());
+  //         addressJson.putString("thoroughfare", address.getThoroughfare());
+  //         addressJson.putString("subThoroughfare", address.getSubThoroughfare());
+  //         addressJson.putString("subLocality", address.getSubLocality());
+  //         addressJson.putString("administrativeArea", address.getAdminArea());
+  //         addressJson.putString("subAdministrativeArea", address.getSubAdminArea());
+  //         addressJson.putString("postalCode", address.getPostalCode());
+  //         addressJson.putString("countryCode", address.getCountryCode());
+  //         addressJson.putString("country", address.getCountryName());
 
-          promise.resolve(addressJson);
-        } catch (IOException e) {
-          promise.reject("Can not get address location");
-        }
-      }
-    });
-  }
+  //         promise.resolve(addressJson);
+  //       } catch (IOException e) {
+  //         promise.reject("Can not get address location");
+  //       }
+  //     }
+  //   });
+  // }
 
   @ReactMethod
   public void pointForCoordinate(final int tag, ReadableMap coordinate, final Promise promise) {

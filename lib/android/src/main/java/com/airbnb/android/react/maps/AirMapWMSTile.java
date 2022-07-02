@@ -4,10 +4,10 @@ import android.content.Context;
 
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.TileOverlay;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.android.gms.maps.model.UrlTileProvider;
+import com.huawei.hms.maps.HuaweiMap;
+import com.huawei.hms.maps.model.TileOverlay;
+import com.huawei.hms.maps.model.TileOverlayOptions;
+import com.huawei.hms.maps.model.UrlTileProvider;
 
 import java.net.MalformedURLException;
 import java.net.URL;

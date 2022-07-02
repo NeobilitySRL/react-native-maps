@@ -12,10 +12,10 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.google.android.gms.maps.model.ButtCap;
-import com.google.android.gms.maps.model.Cap;
-import com.google.android.gms.maps.model.RoundCap;
-import com.google.android.gms.maps.model.SquareCap;
+import com.huawei.hms.maps.model.ButtCap;
+import com.huawei.hms.maps.model.Cap;
+import com.huawei.hms.maps.model.RoundCap;
+import com.huawei.hms.maps.model.SquareCap;
 
 import java.util.Map;
 
